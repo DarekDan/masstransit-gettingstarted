@@ -23,8 +23,13 @@ namespace GettingStarted
                     {
                         x.AddConsumer<MessageConsumer>();
                         x.AddConsumer<BinaryMessageConsumer>();
+                        
+                        x.SetKebabCaseEndpointNameFormatter();
+                        
                         x.UsingRabbitMq((ctx, cfg) =>
                         {
+                            cfg.Host(new Uri("amqp://guest:guest@localhost:5672"));
+                            
                             cfg.ConfigureEndpoints(ctx);
                         });
                     });
