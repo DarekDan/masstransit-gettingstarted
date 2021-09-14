@@ -22,7 +22,8 @@ namespace GettingStarted
                     services.AddMassTransit(x =>
                     {
                         x.AddConsumer<MessageConsumer>();
-                        x.UsingInMemory((ctx, cfg) =>
+                        x.AddConsumer<BinaryMessageConsumer>();
+                        x.UsingRabbitMq((ctx, cfg) =>
                         {
                             cfg.ConfigureEndpoints(ctx);
                         });
