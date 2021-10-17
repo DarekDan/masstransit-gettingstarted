@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GreenPipes;
 using MassTransit;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -35,6 +33,7 @@ namespace GettingStarted
                     log.MinimumLevel.Override("Quartz", LogEventLevel.Information);
                     log.WriteTo.Console();
                 })
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddMassTransit(x =>
