@@ -38,7 +38,7 @@ namespace GettingStarted
                         });
 
                         x.SetKebabCaseEndpointNameFormatter();
-
+                        
                         x.UsingRabbitMq((ctx, cfg) =>
                         {
                             cfg.Host(new Uri("amqp://127.0.0.1:5672/"), rabbitMqHostConfigurator =>
@@ -51,6 +51,8 @@ namespace GettingStarted
 
                             cfg.ConfigureEndpoints(ctx);
                         });
+                        
+                        //x.AddSagaStateMachine<PayOrderStateMachine, PayOrder>();
                     });
                     services.AddMassTransitHostedService(true);
 
