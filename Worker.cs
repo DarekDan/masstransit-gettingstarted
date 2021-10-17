@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MassTransit;
@@ -23,36 +21,24 @@ namespace GettingStarted
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Worker running at: {Time}", DateTimeOffset.Now);
             await Task.Factory.StartNew(async () =>
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    await _bus.Publish(new Message { Text = $"The time is {DateTimeOffset.Now}" }, stoppingToken);
-                    await Task.Delay(new Random().Next(10), stoppingToken);
-                }
-            }, stoppingToken);
-            await Task.Factory.StartNew(async () =>
-            {
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    await _bus.Publish(new BinaryMessage { Now = DateTimeOffset.Now }, stoppingToken);
-                    await Task.Delay(new Random().Next(10), stoppingToken);
-                }
-            }, stoppingToken);
-            await Task.Factory.StartNew(async () =>
-            {
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    await _bus.Publish(new Eva { Text = Guid.NewGuid().ToString()}, stoppingToken);
-                    await Task.Delay(new Random().Next(10), stoppingToken);
+                    await _bus.Publish(
+                        new PaymentRequest
+                        {
+                            RequestedDateTime = DateTimeOffset.Now, RequestId = Guid.NewGuid(),
+                            AccountNumber = RandomGenerator.RandomAccountNumber(12),
+                            Amount = RandomGenerator.RandomAmount(1000)
+                        }, stoppingToken);
+                    await Task.Delay(new Random().Next(1000, 2000), stoppingToken);
                 }
             }, stoppingToken);
             while (!stoppingToken.IsCancellationRequested)
             {
                 await Task.Delay(1000, stoppingToken);
             }
-            _logger.LogInformation("Worker stopped at: {Time}", DateTimeOffset.Now);
         }
     }
 }

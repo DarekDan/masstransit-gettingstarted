@@ -39,13 +39,11 @@ namespace GettingStarted
                 {
                     services.AddMassTransit(x =>
                     {
-                        x.AddConsumer<MessageConsumer>();
-                        x.AddConsumer<EvaConsumer>(configurator =>
+                        x.AddConsumer<PaymentRequestConsumer>(configurator =>
                         {
                             configurator.UseMessageRetry(retryConfigurator =>
                                 retryConfigurator.Interval(100, TimeSpan.FromMilliseconds(50)));
                         });
-                        x.AddConsumer<BinaryMessageConsumer>();
 
                         x.SetKebabCaseEndpointNameFormatter();
 
