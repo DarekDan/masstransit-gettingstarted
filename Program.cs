@@ -21,8 +21,11 @@ namespace GettingStarted
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((ctx, log) =>
                 {
+                    var env = ctx.HostingEnvironment;
+                    
                     var configuration = new ConfigurationBuilder()
-                        .AddJsonFile("appsettings.json")
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                         .Build();
                     log.ReadFrom.Configuration(configuration);
                 })
