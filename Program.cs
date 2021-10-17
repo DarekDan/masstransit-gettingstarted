@@ -2,6 +2,7 @@ using System;
 using GreenPipes;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -20,18 +21,10 @@ namespace GettingStarted
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((ctx, log) =>
                 {
-                    if (ctx.HostingEnvironment.IsProduction())
-                    {
-                        log.MinimumLevel.Warning();
-                    }
-                    else
-                    {
-                        log.MinimumLevel.Information();
-                    }
-
-                    log.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
-                    log.MinimumLevel.Override("Quartz", LogEventLevel.Information);
-                    log.WriteTo.Console();
+                    var configuration = new ConfigurationBuilder()
+                        .AddJsonFile("appsettings.json")
+                        .Build();
+                    log.ReadFrom.Configuration(configuration);
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureServices((hostContext, services) =>
