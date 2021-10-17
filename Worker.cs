@@ -21,6 +21,7 @@ namespace GettingStarted
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            /*
             await Task.Factory.StartNew(async () =>
             {
                 while (!stoppingToken.IsCancellationRequested)
@@ -35,6 +36,7 @@ namespace GettingStarted
                     await Task.Delay(new Random().Next(1000, 2000), stoppingToken);
                 }
             }, stoppingToken);
+            */
             while (!stoppingToken.IsCancellationRequested)
             {
                 await Task.Delay(1000, stoppingToken);
