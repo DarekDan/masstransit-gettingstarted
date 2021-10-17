@@ -24,12 +24,35 @@ namespace GettingStarted
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Worker running at: {Time}", DateTimeOffset.Now);
+            await Task.Factory.StartNew(async () =>
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await _bus.Publish(new Message { Text = $"The time is {DateTimeOffset.Now}" }, stoppingToken);
+                    await Task.Delay(new Random().Next(10), stoppingToken);
+                }
+            }, stoppingToken);
+            await Task.Factory.StartNew(async () =>
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await _bus.Publish(new BinaryMessage { Now = DateTimeOffset.Now }, stoppingToken);
+                    await Task.Delay(new Random().Next(10), stoppingToken);
+                }
+            }, stoppingToken);
+            await Task.Factory.StartNew(async () =>
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await _bus.Publish(new Eva { Text = Guid.NewGuid().ToString()}, stoppingToken);
+                    await Task.Delay(new Random().Next(10), stoppingToken);
+                }
+            }, stoppingToken);
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _bus.Publish(new Message { Text = $"The time is {DateTimeOffset.Now}" }, stoppingToken);
-                await _bus.Publish(new BinaryMessage { Now = DateTimeOffset.Now }, stoppingToken);
                 await Task.Delay(1000, stoppingToken);
             }
+            _logger.LogInformation("Worker stopped at: {Time}", DateTimeOffset.Now);
         }
     }
 }
