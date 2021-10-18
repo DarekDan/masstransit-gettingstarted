@@ -1,7 +1,7 @@
 using System;
 using NodaMoney;
 
-namespace GettingStarted
+namespace GettingStarted.PaymentsDomain
 {
     public class PaymentRequest
     {

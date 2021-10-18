@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace GettingStarted
+namespace GettingStarted.PaymentsDomain
 {
     public class PaymentRequestConsumer : IConsumer<PaymentRequest>
     {

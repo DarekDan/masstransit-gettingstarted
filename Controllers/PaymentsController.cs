@@ -1,4 +1,5 @@
 using System;
+using GettingStarted.PaymentsDomain;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
