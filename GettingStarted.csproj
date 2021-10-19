@@ -17,4 +17,8 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PaymentsDomain\Sagas" />
+  </ItemGroup>
 </Project>
